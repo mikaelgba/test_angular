@@ -1,0 +1,101 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.main-body {
+  padding-top: 20px;
+  margin: 20px;
+  max-width: 1348px;
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.action {
+  display: flex;
+  gap: 5px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.mat-header-row {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mat-header-row {
+    display: table-row;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .table-container table {
+    width: 100%;
+  }
+
+  .mat-column-id,
+  .mat-column-name,
+  .mat-column-email,
+  .mat-column-phone {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .mat-header-row {
+    display: none;
+  }
+
+  .mat-row {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mat-cell {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .mat-cell:before {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .mat-cell:nth-child(1):before {
+    content: 'ID: ';
+  }
+
+  .mat-cell:nth-child(2):before {
+    content: 'Name: ';
+  }
+
+  .mat-cell:nth-child(3):before {
+    content: 'Email: ';
+  }
+
+  .mat-cell:nth-child(4):before {
+    content: 'Phone: ';
+  }
+
+  .mat-cell:nth-child(5) {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mat-cell:nth-child(5) button {
+    margin: 0 5px;
+  }
+}
