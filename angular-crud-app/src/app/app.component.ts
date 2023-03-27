@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, HostBinding  } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UserAddEditComponent } from './user-add-edit/user-add-edit.component';
-import { UserService } from './services/employee.service';
+import { UserService } from './services/user.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,6 +13,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
+
 export class AppComponent implements OnInit {
 
   @HostBinding('class.mobile') isMobile = false;
@@ -24,17 +25,16 @@ export class AppComponent implements OnInit {
     'phone',
     'action',
   ];
-  dataSource!: MatTableDataSource<any>;
 
+  dataSource!: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
     private _dialog: MatDialog,
-    private _empService: UserService,
+    private _userService: UserService,
     private _coreService: CoreService,
-    private breakpointObserver: BreakpointObserver
-  ) {}
+    private breakpointObserver: BreakpointObserver) {}
 
   ngOnInit(): void {
     this.breakpointObserver.observe(['(max-width: 600px)']).subscribe(result => {
@@ -55,7 +55,7 @@ export class AppComponent implements OnInit {
   }
 
   getUserList() {
-    this._empService.getUserList().subscribe({
+    this._userService.getUserList().subscribe({
       next: (res) => {
         this.dataSource = new MatTableDataSource(res);
         this.dataSource.sort = this.sort;
@@ -81,15 +81,13 @@ export class AppComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe({
       next: (val) => {
-        if (val) {
-          this.getUserList();
-        }
+        if (val) { this.getUserList();}
       },
     });
   }
 
   deleteUser(id: string) {
-    this._empService.deleteUser(id).subscribe({
+    this._userService.deleteUser(id).subscribe({
       next: (res) => {
         this._coreService.openSnackBar('User deleted!', 'done');
         this.getUserList();

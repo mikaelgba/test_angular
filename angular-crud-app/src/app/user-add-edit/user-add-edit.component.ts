@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CoreService } from '../core/core.service';
-import { UserService } from '../services/employee.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-emp-add-edit',
@@ -10,19 +10,21 @@ import { UserService } from '../services/employee.service';
   styleUrls: ['./user-add-edit.component.scss'],
 })
 export class UserAddEditComponent implements OnInit {
+
   userForm: FormGroup;
+  snackBar: any;
 
   constructor(
     private _fb: FormBuilder,
     private _userService: UserService,
     private _dialogRef: MatDialogRef<UserAddEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _coreService: CoreService
-  ) {
+    private _coreService: CoreService) {
+
     this.userForm = this._fb.group({
-      name: '',
-      email: '',
-      phone: '',
+      name: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(250)]),
+      email: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]),
+      phone: new FormControl('', [Validators.required, Validators.pattern('^[(]?[1-9]{2}[)]?[ ]?[2-9][0-9]{3,4}[-]?[0-9]{4}$')]),
     });
   }
 
@@ -51,7 +53,13 @@ export class UserAddEditComponent implements OnInit {
             this._dialogRef.close(true);
           },
           error: (err: any) => {
-            console.error(err);
+            let message = 'An error occurred while creating the user. Please try again later.';
+          if (err.status === 400) {
+            message = err.error.message;
+          }
+          this.snackBar.open(message, 'Close', {
+            duration: 2000,
+          });
           },
         });
       }

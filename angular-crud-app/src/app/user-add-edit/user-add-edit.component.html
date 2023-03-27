@@ -1,29 +1,35 @@
 <div mat-dialog-title>
   <h1>User Form</h1>
 </div>
-<<form [formGroup]="userForm" (ngSubmit)="onFormSubmit()">
+<form [formGroup]="userForm" (ngSubmit)="onFormSubmit()">
+
   <div mat-dialog-content class="content">
+
       <div class="row">
           <mat-form-field appearance="outline">
               <mat-label>Name</mat-label>
               <input matInput type="text" placeholder="Ex. John Wick" formControlName="name" required>
               <mat-error *ngIf="userForm.controls['name'].hasError('required')">Name is required</mat-error>
+              <mat-error *ngIf="userForm.controls['name'].hasError('minlength')">Name must be at least 4 characters long</mat-error>
+              <mat-error *ngIf="userForm.controls['name'].hasError('maxlength')">Name cannot be longer than 250 characters</mat-error>
           </mat-form-field>
       </div>
 
       <div class="row">
+
           <mat-form-field appearance="outline">
               <mat-label>Email</mat-label>
               <input matInput type="email" placeholder="Ex. pessoa@email.com" formControlName="email" required>
               <mat-error *ngIf="userForm.controls['email'].hasError('required')">Email is required</mat-error>
-              <mat-error *ngIf="userForm.controls['email'].hasError('email')">Enter a valid email</mat-error>
+              <mat-error *ngIf="userForm.controls['email'].hasError('pattern') && userForm.controls['email'].touched">Enter a valid email</mat-error>
           </mat-form-field>
+
           <mat-form-field appearance="outline">
             <mat-label>Phone</mat-label>
             <input matInput type="tel" placeholder="Ex.(11) 987654321" formControlName="phone" required>
             <mat-error *ngIf="userForm.controls['phone'].hasError('required')">Phone is required</mat-error>
-            <mat-error *ngIf="userForm.controls['phone'].hasError('pattern')">Enter a valid phone number (Ex. (11) 987654321)</mat-error>
-        </mat-form-field>
+            <mat-error *ngIf="userForm.controls['phone'].hasError('pattern')">Enter a valid phone number</mat-error>
+          </mat-form-field>
       </div>
 
   </div>
